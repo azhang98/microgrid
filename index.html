@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-A-Compatible" content="IE-edge" />
+  <title>Interface and Monitoring | Microgrid</title>
+  <!-- styles -->
+  <link rel="stylesheet" href="styles/home.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" />
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">logo</a>
+    <div class="navigation">
+      <ul class="menu">
+        <div class="close-btn"></div>
+        <li class="menu-item"><a href="index.html">Home</a></li>
+        <li class="menu-item">
+          <a class="sub-btn">Interface ↓</a>
+          <ul class="sub-menu">
+            <li class="sub-item"><a href="solar.html">Solar</a></li>
+            <li class="sub-item"><a href="wind.html">Wind</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="menu-btn"></div>
+  </header>
+
+  <section class="landing-page">
+    <h2>User Interface for Renewable Energy Workbench</h2>
+    <p>Energy Source Workbenches</p>
+    <div class="home-btn">
+      <a href="solar.html" class="btn">Solar</a>
+      <a href="wind.html" class="btn">Wind</a>
+    </div>
+  </section>
+	
+</body>
+
+<footer>
+  <div class="footer-content">
+    <h3>filler title</h3>
+    <p>filler txt</p>
+  </div>
+  <div class="footer-bottom">
+    <p>UNM ECE Senior Design Spring 2022 | <span>Zinah Alsaad, Luis Estrada, Anna Janicek, Illiana Tafoya, Andrew
+        Zhang</span></p>
+  </div>
+</footer>
+<script>
+  // toggle dropdown
+  $(document).ready(function () {
+    //toggle sub menu
+    $(".sub-btn").click(function () {
+      $(this).next(".sub-menu").slideToggle();
+    });
+  });
+
+  //responsive navigation menu
+  const menu = document.querySelector(".menu");
+  const menuBtn = document.querySelector(".menu-btn");
+  const closeBtn = document.querySelector(".close-btn");
+
+  menuBtn.addEventListener("click", () => {
+    menu.classList.add("active");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    menu.classList.remove("active");
+  });
+
+  //header bar on scroll
+  window.addEventListener("scroll", function () {
+    const header = document.querySelector("header");
+    header.classList.toggle("sticky", window.scrollY > 0)
+  });
+</script>
+
+</html>
