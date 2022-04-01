@@ -1,3 +1,5 @@
+/*taken from https://www.youtube.com/watch?v=Y1JhMa22CoM*/
+
 drawChart();
 // setup 
 async function drawChart() {
@@ -69,7 +71,6 @@ async function drawChart() {
     );
 }
 
-/*https://www.youtube.com/watch?v=Y1JhMa22CoM*/
 async function getData() {
     //arrays to store data
     const labels = [];
@@ -108,9 +109,12 @@ async function getData() {
     };
 }
 
+// gets filename from txt file so fetch can read the csv
+// to whoever has to modify this in the future, sorry it's scuffed
 async function getFilename() {
     let filename = $.get('filename.txt', function (file) {
         const lines = file.split("\r\n");
+        //this file should only ever have one line
         lines.forEach(row => {
             filename = String(row);
         });
