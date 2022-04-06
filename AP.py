@@ -100,12 +100,7 @@ oled.text(password, 0, 60)
 #import csv
 # csv.create_csv(1)
 #csv.add_parameter(12.45, 1.37, 13.21, 12.23, 1.73, 11.34)
-<<<<<<< HEAD
-#import RS232      # Simply Modbus
-#import LinearActuator
-=======
 # import RS232      # Simply Modbus
->>>>>>> 16e7ca947075c4f08ce1ae10f69fbae906611ae1
 
 
 ##############################################
