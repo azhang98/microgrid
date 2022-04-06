@@ -6,7 +6,6 @@ from time import sleep
 
 uart = UART(2, 9600)
 
-
 def get_battery_voltage() -> float:
     read_battery_voltage = bytearray([0x01, 0x03, 0x01, 0x01, 0x00, 0x01, 0xD4, 0x36])
     uart.write(read_battery_voltage)
