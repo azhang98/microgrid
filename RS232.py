@@ -20,25 +20,25 @@ def get_panel_voltage():
     get_panel_voltage = bytearray([0x01, 0x03, 0x01, 0x07, 0x00, 0x03, 0xB5, 0xF6])
     uart.write(get_panel_voltage)
     sleep(0.5)
-    #buf = uart.read()
-    #print(buf)
-    #panel_volt = (int.from_bytes(buf[4:5], "big") * 0.1)
-    #print(panel_volt)
+    buf = uart.read()
+    print(buf)
+    panel_volt = (int.from_bytes(buf[4:5], "big") * 0.1)
+    print(panel_volt)
     #panel_current = (int.from_bytes(buf[5:6], "big") * 0.01)
     #print(panel_current)
     #panel_volt_current = [panel_volt, panel_current]
     #return panel_volt_current
-    #return panel_volt
+    return panel_volt
 
 def get_panel_current():
     get_panel_current = bytearray([0x01, 0x03, 0x01, 0x08, 0x00, 0x02, 0x44, 0x35])
     uart.write(get_panel_current)
     sleep(0.5)
-    #buf = uart.read()
-    #print(buf)
-    #panel_current = (int.from_bytes(buf[4:6], "big") * 0.01)
-    #print(panel_current)
-    #return panel_current
+    buf = uart.read()
+    print(buf)
+    panel_current = (int.from_bytes(buf[4:6], "big") * 0.01)
+    print(panel_current)
+    return panel_current
     #print(panel_volt_current)
 
 get_battery_voltage()
