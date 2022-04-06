@@ -7,7 +7,7 @@ from time import sleep
 uart = UART(2, 9600)
 
 
-def Read_Panel_Battery_Voltage():
+def get_battery_voltage() -> float:
     read_battery_voltage = bytearray([0x01, 0x03, 0x01, 0x01, 0x00, 0x01, 0xD4, 0x36])
     uart.write(read_battery_voltage)
     sleep(1)
@@ -16,9 +16,9 @@ def Read_Panel_Battery_Voltage():
     batt_volt = (int.from_bytes(buf[4:5], "big") * 0.1)
     return batt_volt
 
-def Read_Panel_Voltage():
-    read_panel_voltage = bytearray([0x01, 0x03, 0x01, 0x07, 0x00, 0x03, 0xB5, 0xF6])
-    uart.write(read_panel_voltage)
+def get_panel_voltage():
+    get_panel_voltage = bytearray([0x01, 0x03, 0x01, 0x07, 0x00, 0x03, 0xB5, 0xF6])
+    uart.write(get_panel_voltage)
     sleep(0.5)
     #buf = uart.read()
     #print(buf)
@@ -30,9 +30,9 @@ def Read_Panel_Voltage():
     #return panel_volt_current
     #return panel_volt
 
-def Read_Panel_Current():
-    read_panel_current = bytearray([0x01, 0x03, 0x01, 0x08, 0x00, 0x02, 0x44, 0x35])
-    uart.write(read_panel_current)
+def get_panel_current():
+    get_panel_current = bytearray([0x01, 0x03, 0x01, 0x08, 0x00, 0x02, 0x44, 0x35])
+    uart.write(get_panel_current)
     sleep(0.5)
     #buf = uart.read()
     #print(buf)
@@ -41,12 +41,12 @@ def Read_Panel_Current():
     #return panel_current
     #print(panel_volt_current)
 
-Read_Panel_Battery_Voltage()
-Read_Panel_Voltage()
-Read_Panel_Current()
-#print(Read_Panel_Battery_Voltage())
-#print(Read_Panel_Voltage())
-#print(Read_Panel_Current())
+get_battery_voltage()
+get_panel_voltage()
+get_panel_current()
+#print(get_battery_voltage())
+#print(get_panel_voltage())
+#print(get_panel_current())
 
 
 #  Recieve input from RS232 port and echo it back to through the UART/ Write it to the text file

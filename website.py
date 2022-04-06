@@ -70,7 +70,7 @@ def get_height(microWebSrv2, request):
 	request.Response.ReturnOk(content)
 
 @WebRoute(POST, '/wind', name=None)
-def RequestWindPOST(MicroWebSrv2, request) :
+def request_wind_POST(MicroWebSrv2, request) :
 	
     global Wind_data
     Wind_data = request.GetPostedURLEncodedForm()
@@ -87,7 +87,7 @@ def RequestWindPOST(MicroWebSrv2, request) :
     request.Response.ReturnOk(content = None)
 
 @WebRoute(GET, '/wind', name = None)
-def RequestWindGET(MicroWebSrv2, request) :
+def request_wind_GET(MicroWebSrv2, request) :
 	request.Response.ReturnOkJSON({
 		'PWM' : PWM
 	})

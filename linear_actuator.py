@@ -14,7 +14,7 @@ pos_top = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
 
 cur_pos = 0
 
-def move_actuator(new_pos: int):
+def move_actuator(new_pos: int) -> None:
     z = new_pos - cur_pos
     fifteen_sec = time.time() + 15
     if(z < 0):

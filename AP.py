@@ -1,36 +1,39 @@
-#Use this boot file to import all of the files to be run
+# Use this boot file to import all of the files to be run
 
 try:
-  import  usocket       as socket
+    import usocket as socket
 except:
-  import  socket
-import    network
-import    Time_Elapsed
-from      MicroWebSrv2  import *
-from      time          import sleep
-import    time
+    import socket
 
-import    esp
+import esp
 esp.osdebug(None)
 
 import gc
-gc.collect()
-
-#OLED Display Includes
-from machine import Pin, SoftI2C
-import OLED_Library
-
+import usocket as socket
+import network
 import time
+from MicroWebSrv2 import *
+from time import sleep
+
+import linear_actuator
 import csv
+import time_elapsed
+
+# OLED Display Includes
+import OLED_Library
+from machine import Pin, SoftI2C
+
+gc.collect()
 
 ssid = 'MicroPython AP'
 password = '123456789'
 IP_Website = '192.168.6.9'
 ap = network.WLAN(network.AP_IF)
 ap.active(True)
-ap.config(essid=ssid, authmode = 3, password=password)
+ap.config(essid=ssid, authmode=3, password=password)
 
-ap.ifconfig(('192.168.6.9', '255.255.255.0', '192.168.0.1', '8.8.8.8'))      #This Line is causing the ELF issue
+# This Line is causing the ELF issue
+ap.ifconfig(('192.168.6.9', '255.255.255.0', '192.168.0.1', '8.8.8.8'))
 
 print('Connection successful')
 print(ap.ifconfig())
@@ -93,12 +96,11 @@ oled.text(password, 0, 60)
   """
 #############################################
 
-#sleep(5)
+# sleep(5)
 #import csv
-#csv.create_csv(1)
+# csv.create_csv(1)
 #csv.add_parameter(12.45, 1.37, 13.21, 12.23, 1.73, 11.34)
-#import RS232      # Simply Modbus
-import LinearActuator
+# import RS232      # Simply Modbus
 
 
 ##############################################
