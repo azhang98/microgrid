@@ -5,9 +5,9 @@ import time
 def Move_Actuator(position: int):
     """
 
-Down = machine.Pin(14, machine.Pin.OUT)     #Green LED
+Down = machine.Pin(37, machine.Pin.OUT)     #Green LED
 Down.off()
-Up = machine.Pin(12, machine.Pin.OUT)       # Red LED
+Up = machine.Pin(36, machine.Pin.OUT)       # Red LED
 Up.off()
 pos_bottom = machine.Pin(27, machine.Pin.IN, machine.Pin.PULL_UP)
 pos_top = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
