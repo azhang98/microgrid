@@ -12,11 +12,6 @@ import os
 from machine import Pin, SoftSPI
 from sdcard import SDCard
 
-Lin_Down = Pin(21, Pin.OUT)     #Green LED
-Lin_Up = Pin(22, Pin.OUT)       # Red LED
-Lin_Down.off()
-Lin_Up.off()
-
 spisd = SoftSPI(-1, miso=Pin(19), mosi=Pin(23), sck=Pin(18))
 sd = SDCard(spisd, Pin(5))
 
