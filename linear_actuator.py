@@ -1,18 +1,34 @@
 import machine
 from time import sleep
 import time
+import time_elapsed
 """
 def Move_Actuator(position: int):
     """
 
-Down = machine.Pin(37, machine.Pin.OUT)     #Green LED
+Down = machine.Pin(25, machine.Pin.OUT)     #Green LED
 Down.off()
-Up = machine.Pin(36, machine.Pin.OUT)       # Red LED
+Up = machine.Pin(26, machine.Pin.OUT)       # Red LED
 Up.off()
 pos_bottom = machine.Pin(27, machine.Pin.IN, machine.Pin.PULL_UP)
-pos_top = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
+pos_top = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_UP)
 
 cur_pos = 0
+
+def total_travel_time():
+    while(pos_bottom.value() == 1):
+        Down.on()
+
+    start = time_elapsed.elapsed_time_seconds()
+    Down.off()
+
+    while(pos_top.value() == 1):
+        Up.on()
+    
+    end = time_elapsed.elapsed_time_seconds()
+    Up.off()
+
+    return (end - start)
 
 def move_actuator(new_pos: int) -> None:
     z = new_pos - cur_pos
@@ -38,6 +54,5 @@ def calibrate_actuator():
 
 #move_actuator(50)
 print("Yeet")
-#calibrate_actuator()
-while True:
-    pass
+print(total_travel_time())
+calibrate_actuator()
