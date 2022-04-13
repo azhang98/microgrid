@@ -1,74 +1,54 @@
 #from encodings import utf_8
 #import os
 #from machine import UART
-from machine import Pin, UART
-from time import sleep
+#connectors should be black white red
 
+# The ESP32 MUST BE powered on before being connected to the solar charge controller
+# DO NOT connect the RS232 cable to the ESP Web server while it is powered off
+
+# Startup Sequence of system is
+# 1. ESP32 Wweb server
+# 2. Solar Charge Controller
+
+from machine import Pin, UART
+import time
 uart = UART(2, 9600)
 
-def get_battery_voltage() -> float:
-    read_battery_voltage = bytearray([0x01, 0x03, 0x01, 0x01, 0x00, 0x01, 0xD4, 0x36])
+def send_battery_bytes() -> float:
+    read_battery_voltage = bytes([0x01, 0x03, 0x01, 0x01, 0x00, 0x01, 0xd4, 0x36])
     uart.write(read_battery_voltage)
-    sleep(1)
     buf = uart.read()
-    print(buf)
-    batt_volt = (int.from_bytes(buf[4:5], "big") * 0.1)
+    return buf
+
+def send_panel_voltage_bytes():
+    read_panel_voltage = bytes([0x01, 0x03, 0x01, 0x07, 0x00, 0x03, 0xB5, 0xF6])
+    uart.write(read_panel_voltage)
+    buf = uart.read()
+    return buf
+
+def send_panel_current_bytes():
+    read_panel_current = bytes([0x01, 0x03, 0x01, 0x08, 0x00, 0x02, 0x44, 0x35])
+    uart.write(read_panel_current)
+    buf = uart.read()
+    return buf
+
+def get_battery_voltage():
+    for x in range(2):
+        temp = send_battery_bytes()
+        time.sleep(0.1)
+    batt_volt = (int.from_bytes(temp[4:5], "big") * 0.1)
     return batt_volt
 
 def get_panel_voltage():
-    get_panel_voltage = bytearray([0x01, 0x03, 0x01, 0x07, 0x00, 0x03, 0xB5, 0xF6])
-    uart.write(get_panel_voltage)
-    sleep(0.5)
-    buf = uart.read()
-    print(buf)
-    panel_volt = (int.from_bytes(buf[4:5], "big") * 0.1)
-    print(panel_volt)
-    #panel_current = (int.from_bytes(buf[5:6], "big") * 0.01)
-    #print(panel_current)
-    #panel_volt_current = [panel_volt, panel_current]
-    #return panel_volt_current
+    for x in range(2):
+        temp = send_panel_voltage_bytes()
+        time.sleep(0.1)
+    panel_volt = (int.from_bytes(temp[4:5], "big") * 0.1)
     return panel_volt
 
 def get_panel_current():
-    get_panel_current = bytearray([0x01, 0x03, 0x01, 0x08, 0x00, 0x02, 0x44, 0x35])
-    uart.write(get_panel_current)
-    sleep(0.5)
-    buf = uart.read()
-    print(buf)
-    panel_current = (int.from_bytes(buf[4:6], "big") * 0.01)
-    print(panel_current)
-    return panel_current
-    #print(panel_volt_current)
-
-get_battery_voltage()
-get_panel_voltage()
-get_panel_current()
-#print(get_battery_voltage())
-#print(get_panel_voltage())
-#print(get_panel_current())
-
-
-#  Recieve input from RS232 port and echo it back to through the UART/ Write it to the text file
-"""
-print("yeet")
-while True:
-    log = open("yeet.txt", "a")
-    #print(buf)
-    if(uart.any() > 0):
-        buf = uart.read()
-        buf = str(buf)
-        #buf = buf.decode(utf_8)
-        log.write(buf)
-        log.close() 
-        uart.write(buf[2])
-"""
-
-"""
-oled_width = 128
-oled_height = 64
-oled = OLED_Library.SSD1306_SPI(oled_width, oled_height, i2c)
-"""
-
-
-#while True:
-#    uart.write('ECE')
+    for x in range(2):
+        temp = send_panel_current_bytes()
+        time.sleep(0.1)
+    panel_cur = (int.from_bytes(temp[4:5], "big") * 0.01)
+    return panel_cur
