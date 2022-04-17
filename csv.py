@@ -1,6 +1,4 @@
-import time
 import time_elapsed
-#import RS232
 
 u_id = 1
 num = 1
@@ -40,13 +38,3 @@ def add_parameter(s_volt: float, s_cur: float, s_batt: float, w_volt: float, w_c
             str(s_volt) + ',' + str(s_cur) + ','+
             str(s_batt) + ','+ str(w_volt) + ',' + str(w_cur) + ',' + str(w_batt) + '\r\n')
         increment()
-
-""""
-t = time.localtime()
-print(t)
-create_csv(num)
-add_parameter(time_elapsed.elapsed_time(), 12.3, 2.3, 12.4, 2.1)
-time.sleep(2)
-add_parameter(time_elapsed.elapsed_time(), 12.1, 2.5, 13.4,1.1)
-#add_parameter(get_date(), get_time(), 5.3, 3.5, 6.9, 5.1)
-"""
