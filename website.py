@@ -2,7 +2,7 @@
 
 from MicroWebSrv2 import *
 from time import sleep
-#import linear_actuator
+import linear_actuator
 import RS232
 import csv
 
@@ -18,18 +18,10 @@ def get_height(microWebSrv2, request) -> None:
 			<meta charset="UTF-8" />
 			<meta http-equiv="X-A-Compatible" content="IE-edge" />
 			<title>Adjust Height | Microgrid</title>
-			<style>
-				* {
-					margin: 0;
-					padding: 0;
-					box-sizing: border-box;
-					font-family: "Verdana", sans-serif;
-				}
-			</style>
 		</head>
 		<body>
 			<form action="/solar-request" method="post">
-				Adjust Height (0-100%): <input type="number" min="0" max="100" name="height" value="0">
+				Adjust Height (0 - 100%): <input type="number" min="0" max="100" name="height" value="0">
 				<input type="submit" value="Send">
 			</form>
 		</body>
@@ -42,7 +34,7 @@ def get_height(microWebSrv2, request):
 	data = request.GetPostedURLEncodedForm()
 	try:
 		height = data['height']
-		#linear_actuator.move_actuator(height)
+		linear_actuator.move_actuator(int(height))
 	except:
 		request.Response.ReturnBadRequest()
 		return
@@ -61,12 +53,6 @@ def get_height(microWebSrv2, request):
 				<p>Data sent</p>
 			</div>
 		</body>
-		<script type="text/javascript">
-		function closeSelf (f) {
-			f.submit();
-			window.close();
-		}
-		</script>
 	</html>
 	"""
 	
@@ -80,13 +66,13 @@ def get_height(microWebSrv2, request) -> None:
         <head>
             <meta charset="UTF-8" />
             <meta http-equiv="X-A-Compatible" content="IE-edge" />
-            <title>Adjust RPM | Microgrid</title>
+            <title>Adjust PWM | Microgrid</title>
             <style>
             </style>
         </head>
         <body>
             <form action="/wind-request" method="post">
-                Adjust RPM (0-80): <input type="number" min="0" max="7200" name="rpm" value="0">
+                Adjust PWM (-60 - 60): <input type="number" min="-60" max="60" name="pwm" value="0">
                 <input type="submit" value="Send">
             </form>
         </body>
@@ -97,9 +83,10 @@ def get_height(microWebSrv2, request) -> None:
 
 @WebRoute(POST, '/wind-request')
 def get_height(microWebSrv2, request): 
+    global PWM
     data = request.GetPostedURLEncodedForm()
     try:
-        PWM = data['rpm']
+        PWM = data['pwm']
         print(PWM)
     except:
         request.Response.ReturnBadRequest()
@@ -111,7 +98,7 @@ def get_height(microWebSrv2, request):
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-A-Compatible" content="IE-edge">
-            <title>RPM Sent | Microgrid</title>
+            <title>PWM Sent | Microgrid</title>
         </head>
 
         <body>
@@ -140,16 +127,17 @@ def request_wind_POST(MicroWebSrv2, request) :
     #print(Wind_data)
     #csv.add_parameter(RS232.Read_Panel_Voltage(), RS232.Read_Panel_Current(), RS232.Read_Panel_Battery_Voltage(), wind_voltage, wind_current, wind_battery)
     #csv.add_parameter(1, 1, 1, wind_voltage, wind_current, wind_battery)
-    csv.add_parameter(RS232.get_battery_voltage, RS232.get_panel_voltage, 1, 1, 1, 1)
+    #csv.add_parameter(1, 1, 1, 1, 1, 1)
     request.Response.ReturnOk(content = None)
     request.Response.ReturnOk(content = None)
 
 @WebRoute(GET, '/wind-PWM', name = None)
 def request_wind_GET(MicroWebSrv2, request) :
-	request.Response.ReturnOkJSON({
+    global PWM
+    request.Response.ReturnOkJSON({
 		'PWM' : PWM
 	})
-	request.Response.ReturnOk(content = None)
+    request.Response.ReturnOk(content = None)
 	
 mws2 = MicroWebSrv2()
 
