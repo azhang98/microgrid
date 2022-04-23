@@ -27,7 +27,7 @@ Adafruit_INA219 ina219;
  float current_mA = 0;
  String PWM; //PWM
  float PWM_wind;
- float BatteryCharged = 13.6;   //at 13.6V battery is fully charged 
+ float BatteryCharged = 12;   //at 12V battery is fully charged
 
  //server ESP32
  const char* ssid = "MicroPython AP";
@@ -48,7 +48,6 @@ Adafruit_INA219 ina219;
   } 
 
 void setup() {
- /*
   //setup Heltic OLED
   pinMode(LED,OUTPUT);
   digitalWrite(LED,LOW);
