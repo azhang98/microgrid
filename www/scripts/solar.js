@@ -8,23 +8,23 @@ async function drawChart() {
     const data = {
         labels: datapoints.labels,
         datasets: [{
-                label: 'Solar Voltage',
-                data: datapoints.solar.voltage,
-                borderColor: [
-                    'rgba(255, 159, 28, 1)'
-                ],
-                tension: 0.15,
-                yAxisID: 'y'
-            },
-            {
-                label: 'Solar Current',
-                data: datapoints.solar.current,
-                borderColor: [
-                    'rgba(254, 215, 102, 1)'
-                ],
-                tension: 0.15,
-                yAxisID: 'y1'
-            }
+            label: 'Solar Voltage',
+            data: datapoints.solar.voltage,
+            borderColor: [
+                'rgba(255, 159, 28, 1)'
+            ],
+            tension: 0.15,
+            yAxisID: 'y'
+        },
+        {
+            label: 'Solar Current',
+            data: datapoints.solar.current,
+            borderColor: [
+                'rgba(254, 215, 102, 1)'
+            ],
+            tension: 0.15,
+            yAxisID: 'y1'
+        }
         ]
     };
 
@@ -83,9 +83,12 @@ async function getData() {
     };
 
     //fetch csv
-    const url = await getFilename();
-    const response = await fetch(url);
+    const url = 'http://192.168.6.9:80/data';
+    const response = await fetch(url, {
+        method: 'GET'
+    });
     const tabledata = await response.text();
+    console.log(tabledata)
 
     //parse csv
     //split by row
@@ -112,7 +115,7 @@ async function getData() {
 // gets filename from txt file so fetch can read the csv
 // to whoever has to modify this in the future, sorry it's scuffed
 async function getFilename() {
-    let filename = $.get('filename.txt', function (file) {
+    let filename = $.get('../filename.txt', function (file) {
         const lines = file.split("\r\n");
         //this file should only ever have one line
         lines.forEach(row => {
@@ -127,20 +130,21 @@ window.onload = async function () {
     //update left panel values
     const data = await getData();
     const batData = data.battery.voltage;
-	const solar = data.solar;
+    const solar = data.solar;
 
-	const average = (array) => array.reduce((a, b) => a + b) / array.length;
+    const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
-	const battery = batData.map(Number);
-	const volt = solar.voltage.map(Number);
-	const cur = solar.current.map(Number);
+    const battery = batData.map(Number);
+    const volt = solar.voltage.map(Number);
+    const cur = solar.current.map(Number);
 
     $('#bat-volt').html(batData[batData.length - 1]);
-	$('#bat-avg').html(average(battery).toFixed(2));
-	$('#s-v-avg').html(average(volt).toFixed(2));
-	$('#s-c-avg').html(average(cur).toFixed(2));
+    $('#bat-avg').html(average(battery).toFixed(2));
+    $('#s-v-avg').html(average(volt).toFixed(2));
+    $('#s-c-avg').html(average(cur).toFixed(2));
 
     //set download link for session
     let filename = await getFilename();
-    document.getElementById('download-btn').setAttribute('href', filename);
+    console.log(filename);
+    document.getElementById('download-btn').setAttribute('href', "../" + filename);
 }

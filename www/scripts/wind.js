@@ -83,8 +83,10 @@ async function getData() {
 	};
 
 	//fetch csv
-	const url = await getFilename();
-	const response = await fetch(url);
+    const url = 'http://192.168.6.9:80/data';
+    const response = await fetch(url, {
+        method: 'GET'
+    });
 	const tabledata = await response.text();
 
 	//parse csv
@@ -112,14 +114,14 @@ async function getData() {
 // gets filename from txt file so fetch can read the csv
 // to whoever has to modify this in the future, sorry it's scuffed
 async function getFilename() {
-	let filename = $.get('filename.txt', function (file) {
+	let filename = $.get('../filename.txt', function (file) {
 		const lines = file.split("\r\n");
         //this file should only ever have one line
 		lines.forEach(row => {
 			filename = String(row);
+			console.log(filename);
 		});
 	});
-
 	return filename;
 }
 
@@ -131,5 +133,5 @@ window.onload = async function () {
 
 	//set download link for session
 	let filename = await getFilename();
-	document.getElementById('download-btn').setAttribute('href', filename);
+	document.getElementById('download-btn').setAttribute('href',"../" + filename);
 }
