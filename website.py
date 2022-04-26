@@ -2,7 +2,7 @@
 
 from MicroWebSrv2 import *
 from time import sleep
-import linear_actuator
+#import linear_actuator
 import RS232
 import csv
 
@@ -34,7 +34,7 @@ def get_height(microWebSrv2, request):
 	data = request.GetPostedURLEncodedForm()
 	try:
 		height = data['height']
-		linear_actuator.move_actuator(int(height))
+		#linear_actuator.move_actuator(int(height))
 	except:
 		request.Response.ReturnBadRequest()
 		return
@@ -138,7 +138,22 @@ def request_wind_GET(MicroWebSrv2, request) :
 		'PWM' : PWM
 	})
     request.Response.ReturnOk(content = None)
-	
+
+"""
+@WebRoute(GET, '/solar.html', name = None)
+def request_filename_GET(MicroWebSrv2, request) :
+    global fname
+    fname = csv.filename1
+    request.Response.ReturnOkJSON({
+        'Filename' : fname
+    })
+    request.Response.ReturnOk(content = None)
+"""
+@WebRoute(GET, '/data', name = None)
+def response_csvfile_GET(MicroWebSrv2, response) :
+    global fname2
+    response.Response.ReturnFile(csv.filename1, None)
+
 mws2 = MicroWebSrv2()
 
 mws2.SetEmbeddedConfig()
