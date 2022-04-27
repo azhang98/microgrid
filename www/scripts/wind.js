@@ -83,11 +83,11 @@ async function getData() {
 	};
 
 	//fetch csv
-    const url = 'http://192.168.6.9:80/data';
+    const url = '/data';
     const response = await fetch(url, {
-        method: 'GET'
+        'content-type': 'text/csv;charset=UTF-8'
     });
-	const tabledata = await response.text();
+    const tabledata = await response.text();
 
 	//parse csv
 	//split by row

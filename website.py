@@ -3,7 +3,7 @@
 from MicroWebSrv2 import *
 from time import sleep
 #import linear_actuator
-import RS232
+#import RS232
 import csv
 
 PWM = 7200
@@ -57,6 +57,7 @@ def get_height(microWebSrv2, request):
 	"""
 	
 	request.Response.ReturnOk(content)
+    
 @WebRoute(GET, '/wind-request')
 def get_height(microWebSrv2, request) -> None:
     content = """
