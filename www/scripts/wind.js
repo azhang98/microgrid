@@ -111,27 +111,9 @@ async function getData() {
 	};
 }
 
-// gets filename from txt file so fetch can read the csv
-// to whoever has to modify this in the future, sorry it's scuffed
-async function getFilename() {
-	let filename = $.get('../filename.txt', function (file) {
-		const lines = file.split("\r\n");
-        //this file should only ever have one line
-		lines.forEach(row => {
-			filename = String(row);
-			console.log(filename);
-		});
-	});
-	return filename;
-}
-
 window.onload = async function () {
 	//update battery voltage
 	const data = await getData();
 	const batData = data.battery.voltage;
 	$('#bat-volt').html(batData[batData.length - 1]);
-
-	//set download link for session
-	let filename = await getFilename();
-	document.getElementById('download-btn').setAttribute('href',"../" + filename);
 }

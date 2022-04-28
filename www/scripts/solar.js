@@ -88,7 +88,6 @@ async function getData() {
         'content-type': 'text/csv;charset=UTF-8'
     });
     const tabledata = await response.text();
-    console.log(tabledata)
 
     //parse csv
     //split by row
@@ -112,20 +111,6 @@ async function getData() {
     };
 }
 
-// gets filename from txt file so fetch can read the csv
-// to whoever has to modify this in the future, sorry it's scuffed
-async function getFilename() {
-    let filename = $.get('../filename.txt', function (file) {
-        const lines = file.split("\r\n");
-        //this file should only ever have one line
-        lines.forEach(row => {
-            filename = String(row);
-        });
-    });
-
-    return filename;
-}
-
 window.onload = async function () {
     //update left panel values
     const data = await getData();
@@ -142,9 +127,4 @@ window.onload = async function () {
     $('#bat-avg').html(average(battery).toFixed(2));
     $('#s-v-avg').html(average(volt).toFixed(2));
     $('#s-c-avg').html(average(cur).toFixed(2));
-
-    //set download link for session
-    let filename = await getFilename();
-    console.log(filename);
-    document.getElementById('download-btn').setAttribute('href', "../" + filename);
 }
