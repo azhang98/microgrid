@@ -10,7 +10,6 @@ def increment() -> None:
 
 # create file
 def create_csv(num) -> None:
-    incre = 0
     while True:
         try:          
             global filename1
@@ -20,8 +19,6 @@ def create_csv(num) -> None:
                 file.write('ID,Time,Solar_Voltage,Solar_Current,Solar_Battery_Voltage,Wind_Voltage,Wind_Current,Wind_Battery_Voltage\r')
                 global file_num
                 file_num = num
-                #with open("filename.txt", 'w') as file2:
-                #    file2.write(filename)
                 return
         except:
             # except error if file exists

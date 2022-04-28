@@ -1,5 +1,3 @@
-#File uses 4 Space tabbing
-
 from MicroWebSrv2 import *
 from time import sleep
 #import linear_actuator

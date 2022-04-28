@@ -10,7 +10,8 @@ pos_top = machine.Pin(14, machine.Pin.IN, machine.Pin.PULL_UP)          # Bottom
 
 cur_pos = int(0)
 
-def total_travel_time() -> float:           # Measures the time for the linear actuator to go from the bottom hall sensor to the top hall sensor
+# Measures the time for the linear actuator to go from the bottom hall sensor to the top hall sensor
+def total_travel_time() -> float:
     while(pos_bottom.value() == 1):
         Down.on()
 
@@ -68,5 +69,3 @@ def move_actuator(new_pos: int) -> None:
             Up.on()
     Down.off()
     Up.off()
-
-#move_actuator(50)

@@ -55,46 +55,6 @@ oled.show()
 
 ##########################################
 """
-"""
-import framebuf
-
-counter = 0
-pic = 'wicked.pbm'
-
-while True:
-  with open(pic, 'rb') as f:
-    f.readline() # Magic number
-    f.readline() # Creator comment
-    f.readline() # Dimensions
-    data = bytearray(f.read())
-  fbuf = framebuf.FrameBuffer(data, 128, 64, framebuf.MONO_HLSB)
-
-  #oled.invert(1)
-  oled.framebuf.blit(fbuf, 0, 0)
-
-"""
-"""
-oled.text(IP_Website, 0,20)
-oled.text(ssid, 0, 40)
-oled.text(password, 0, 60)
-"""
-"""
-  count = counter % 4
-  oled.show()
-  if count == 0:
-    pic = 'supreme.pbm'
-  elif count == 1:
-    pic = 'amogus.pbm'
-  elif count == 2:
-    pic = 'wicked.pbm'
-  else:
-    pic = 'FortniteF.pbm'
-
-  counter += 1
-
-  sleep(5)
-  """
-#############################################
 
 # sleep(5)
 #import csv
