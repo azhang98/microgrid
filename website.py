@@ -1,7 +1,7 @@
 from MicroWebSrv2 import *
 from time import sleep
 #import linear_actuator
-#import RS232
+import RS232
 import csv
 
 PWM = 7200
@@ -124,7 +124,7 @@ def request_wind_POST(MicroWebSrv2, request) :
         request.Response.ReturnBadRequest()
         return
     #print(Wind_data)
-    #csv.add_parameter(RS232.Read_Panel_Voltage(), RS232.Read_Panel_Current(), RS232.Read_Panel_Battery_Voltage(), wind_voltage, wind_current, wind_battery)
+    csv.add_parameter(RS232.Read_Panel_Voltage(), RS232.Read_Panel_Current(), RS232.Read_Panel_Battery_Voltage(), wind_voltage, wind_current, wind_battery)
     #csv.add_parameter(1, 1, 1, wind_voltage, wind_current, wind_battery)
     #csv.add_parameter(1, 1, 1, 1, 1, 1)
     request.Response.ReturnOk(content = None)

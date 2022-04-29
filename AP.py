@@ -59,7 +59,17 @@ oled.show()
 # sleep(5)
 #import csv
 csv.create_csv(1)
-#csv.add_parameter(12.45, 1.37, 13.21, 12.23, 1.73, 11.34)
+csv.add_parameter(0, 0, 0, 0, 0, 0)
+"""
+csv.add_parameter(14.45, 2.37, 10.21, 14.23, 2.73, 10.34)
+csv.add_parameter(11.45, 4.37, 11.21, 11.23, 3.73, 12.34)
+csv.add_parameter(12.45, 1.37, 13.21, 12.23, 1.73, 11.34)
+csv.add_parameter(14.45, 2.37, 10.21, 14.23, 2.73, 10.34)
+csv.add_parameter(11.45, 4.37, 11.21, 11.23, 3.73, 12.34)
+csv.add_parameter(12.45, 1.37, 13.21, 12.23, 1.73, 11.34)
+csv.add_parameter(14.45, 2.37, 10.21, 14.23, 2.73, 10.34)
+csv.add_parameter(11.45, 4.37, 11.21, 11.23, 3.73, 12.34)
+"""
 #import RS232      # Simply Modbus
 #import linear_actuator
 
