@@ -2,100 +2,157 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-A-Compatible" content="IE-edge" />
-	<title>Interface and Monitoring | Microgrid</title>
-	<!-- styles -->
-	<link rel="stylesheet" href="styles/interface.css" />
-	<!-- Libraries -->
-	<script type="text/javascript" src="scripts/libraries/chart.js"></script>
-	<script src="scripts/libraries/jquery.min.js" charset="utf-8"></script>
-	<!-- scripts -->
-	<script type="text/javascript" src="scripts/solar.js"></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-A-Compatible" content="IE-edge" />
+  <title>Interface and Monitoring | Microgrid</title>
+  <!-- styles -->
+  <link rel="stylesheet" href="styles/interface.css" />
+  <!-- Libraries -->
+  <script type="text/javascript" src="scripts/libraries/chart.js"></script>
+  <script src="scripts/libraries/jquery.min.js" charset="utf-8"></script>
+  <!-- scripts -->
+  <script type="text/javascript" src="scripts/solar.js"></script>
 </head>
 
 <body>
-	<!-- Header -->
-	<header>
-		<a href="index.html" class="logo">logo</a>
-		<div class="navigation">
-			<ul class="menu">
-				<div class="close-btn"></div>
-				<li class="menu-item"><a href="index.html">Home</a></li>
-				<li class="menu-item">
-					<a class="sub-btn">Interface ↓</a>
-					<ul class="sub-menu">
-						<li class="sub-item"><a href="solar.html">Solar</a></li>
-						<li class="sub-item"><a href="wind.html">Wind</a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-		<div class="menu-btn"></div>
-	</header>
-
-	<!-- Body -->
-	<div class="interface-container">
-		<div class="info">
-			<div class="interface-btn">
-				<!-- download button-->
-				<a href="/data" download class="download-btn" >Download <span>Data</span></a>
-				<a onclick="window.open('solar-request', '_blank', 'width=500,height=300')" target="_blank"
-					class="height-btn">Adjust <span>Position</span></a>
-			</div>
-			<div class="parameters">
-				<p>Average Solar Voltage: <span id="s-v-avg">0</span></p>
-				<p>Average Solar Current: <span id="s-c-avg">0</span></p>
-				<p>Average Battery Voltage: <span id="bat-avg">0</span></p>
-				<p>Latest Battery Voltage: <span id="bat-volt">0</span></p>
-			</div>
-		</div>
-		<!-- graph -->
-		<div class="chart-wrapper">
-			<canvas id="solar-graph"></canvas>
-		</div>
-	</div>
+  <!-- Header -->
+  <header>
+    <a href="index.html" class="logo">logo</a>
+    <div class="navigation">
+      <ul class="menu">
+        <div class="close-btn"></div>
+        <li class="menu-item"><a href="index.html">Home</a></li>
+        <li class="menu-item">
+          <a class="sub-btn">Interface ↓</a>
+          <ul class="sub-menu">
+            <li class="sub-item"><a href="solar.html">Solar</a></li>
+            <li class="sub-item"><a href="wind.html">Wind</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="menu-btn"></div>
+  </header>
+  
+  <!-- Body -->
+  <div class="interface-container">
+    <div class="info">
+      <div class="interface-btn">
+        <!-- download button-->
+        <a href="/data" download class="download-btn">Download <span>Data</span></a>
+        <a onclick="window.open('solar-request', '_blank', 'width=500,height=300')" target="_blank"
+          class="height-btn">Adjust <span>Position</span></a>
+      </div>
+      <div class="parameters">
+        <p>Average Solar Voltage: <span id="s-v-avg">0</span></p>
+        <p>Average Solar Current: <span id="s-c-avg">0</span></p>
+        <p>Average Battery Voltage: <span id="bat-avg">0</span></p>
+        <p>Latest Battery Voltage: <span id="bat-volt">0</span></p>
+      </div>
+    </div>
+    <!-- graph -->
+    <div class="chart-wrapper">
+      <canvas id="solar-graph"></canvas>
+    </div>
+  </div>
 </body>
 
 <!-- footer -->
 <footer>
-	<div class="footer-content">
-		<h3>title</h3>
-		<p>filler txt</p>
-	</div>
-	<div class="footer-bottom">
-		<p>UNM ECE Senior Design Spring 2022 | <span>Zinah Alsaad, Luis Estrada, Anna Janicek, Illiana Tafoya, Andrew
-				Zhang</span></p>
-	</div>
+  <div class="footer-content">
+    <h3>title</h3>
+    <p>filler txt</p>
+  </div>
+  <div class="footer-bottom">
+    <p>UNM ECE Senior Design Spring 2022 | <span>Zinah Alsaad, Luis Estrada, Anna Janicek, Illiana Tafoya, Andrew
+        Zhang</span></p>
+  </div>
 </footer>
 
 <script>
-	// toggle dropdown
-	$(document).ready(function () {
-		//toggle sub menu
-		$(".sub-btn").click(function () {
-			$(this).next(".sub-menu").slideToggle();
-		});
-	});
+  Chart.defaults.font.family = "Verdana";
 
-	//responsive navigation menu
-	const menu = document.querySelector(".menu");
-	const menuBtn = document.querySelector(".menu-btn");
-	const closeBtn = document.querySelector(".close-btn");
+  const myChart = new Chart(
+    document.getElementById('solar-graph').getContext("2d"), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+            label: 'Solar Voltage',
+            data: [],
+            borderColor: [
+              'rgba(255, 159, 28, 1)',
+            ],
+            tension: 0.15,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Solar Current',
+            data: [],
+            borderColor: [
+              'rgba(254, 215, 102, 1)',
+            ],
+            tension: 0.15,
+            yAxisID: 'y1'
+          },
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            display: true,
+            position: 'left',
 
-	menuBtn.addEventListener("click", () => {
-		menu.classList.add("active");
-	});
+            title: {
+              display: true,
+              text: 'voltage'
+            }
+          },
+          y1: {
+            beginAtZero: true,
+            display: true,
+            position: 'right',
 
-	closeBtn.addEventListener("click", () => {
-		menu.classList.remove("active");
-	});
+            grid: {
+              drawOnChartArea: false
+            },
 
-	//header bar on scroll
-	window.addEventListener("scroll", function () {
-		const header = document.querySelector("header");
-		header.classList.toggle("sticky", window.scrollY > 0)
-	});
+            title: {
+              display: true,
+              text: 'current'
+            }
+          }
+        }
+      }
+    });
+
+  // toggle dropdown
+  $(document).ready(function () {
+    //toggle sub menu
+    $(".sub-btn").click(function () {
+      $(this).next(".sub-menu").slideToggle();
+    });
+  });
+
+  //responsive navigation menu
+  const menu = document.querySelector(".menu");
+  const menuBtn = document.querySelector(".menu-btn");
+  const closeBtn = document.querySelector(".close-btn");
+
+  menuBtn.addEventListener("click", () => {
+    menu.classList.add("active");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    menu.classList.remove("active");
+  });
+
+  //header bar on scroll
+  window.addEventListener("scroll", function () {
+    const header = document.querySelector("header");
+    header.classList.toggle("sticky", window.scrollY > 0)
+  });
 </script>
 
 </html>

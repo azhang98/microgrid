@@ -1,130 +1,60 @@
-/*taken from https://www.youtube.com/watch?v=Y1JhMa22CoM*/
+updateChart();
 
-drawChart();
-// setup 
-async function drawChart() {
-    const datapoints = await getData();
+let labels = [];
 
-    const data = {
-        labels: datapoints.labels,
-        datasets: [{
-            label: 'Solar Voltage',
-            data: datapoints.solar.voltage,
-            borderColor: [
-                'rgba(255, 159, 28, 1)'
-            ],
-            tension: 0.15,
-            yAxisID: 'y'
-        },
-        {
-            label: 'Solar Current',
-            data: datapoints.solar.current,
-            borderColor: [
-                'rgba(254, 215, 102, 1)'
-            ],
-            tension: 0.15,
-            yAxisID: 'y1'
-        }
-        ]
-    };
+let solar = {
+    voltage: [],
+    current: []
+};
 
-    Chart.defaults.font.family = "Verdana";
+let battery = {
+    voltage: []
+};
 
-    // config 
-    const config = {
-        type: 'line',
-        data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    display: true,
-                    position: 'left',
-
-                    title: {
-                        display: true,
-                        text: 'voltage'
-                    }
-                },
-                y1: {
-                    beginAtZero: true,
-                    display: true,
-                    position: 'right',
-
-                    grid: {
-                        drawOnChartArea: false
-                    },
-
-                    title: {
-                        display: true,
-                        text: 'current'
-                    }
-                }
-            }
-        }
-    };
-
-    // render init block
-    const myChart = new Chart(
-        document.getElementById('solar-graph'),
-        config
-    );
+//push new values every 1.5 seconds
+function updateChart() {
+    setInterval(getData, 1500);
 }
 
 async function getData() {
-    //arrays to store data
-    const labels = [];
-    const solar = {
-        voltage: [],
-        current: []
-    };
-    const battery = {
-        voltage: []
-    };
-
-    //fetch csv
+    //fetch csv from url
     const url = '/data';
-    const response = await fetch(url, {
-        'content-type': 'text/csv;charset=UTF-8'
-    });
-    const tabledata = await response.text();
+    fetch(url, {
+            'content-type': 'text/csv;charset=UTF-8'
+        })
+        .then(data => data.text(), error => console.warn("Failed to fetch data"))
+        .then(tabledata => {
+            //split by row
+            const table = tabledata.split('\n').slice(1);
 
-    //parse csv
-    //split by row
-    const table = tabledata.split('\n').slice(1);
+            //get last row
+            const row = table[table.length - 1].split(',');
 
-    //split by column
-    table.forEach(row => {
-        const column = row.split(',');
-        labels.push(column[1]);
+            //display 30 data points on the graph at anytime
+            if (myChart.data.labels.length > 30) {
+                myChart.data.labels.shift();
+                myChart.data.datasets[0].data.shift();
+                myChart.data.datasets[1].data.shift();
+            }
+            //update chart
+            myChart.data.labels.push(row[1]);
+            myChart.data.datasets[0].data.push(row[2]);
+            myChart.data.datasets[1].data.push(row[3]);
 
-        solar.voltage.push(column[2]);
-        solar.current.push(column[3]);
+            //update array
+            labels.push(row[1]);
+            solar.voltage.push(row[2]);
+            solar.current.push(row[3]);
+            battery.voltage.push(row[4]);
 
-        battery.voltage.push(column[4]);
-    });
+            myChart.update();
 
-    return {
-        labels,
-        solar,
-        battery
-    };
-}
+            const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
-window.onload = async function () {
-    //update left panel values
-    const data = await getData();
-    const batData = data.battery.voltage;
-    const solar = data.solar;
-
-    const average = (array) => array.reduce((a, b) => a + b) / array.length;
-
-    const battery = batData.map(Number);
-    const volt = solar.voltage.map(Number);
-    const cur = solar.current.map(Number);
-
-    $('#bat-volt').html(batData[batData.length - 1]);
-    $('#bat-avg').html(average(battery).toFixed(2));
-    $('#s-v-avg').html(average(volt).toFixed(2));
-    $('#s-c-avg').html(average(cur).toFixed(2));
+            //update left panels
+            $('#bat-volt').html(battery.voltage[battery.voltage.length - 1]);
+            $('#bat-avg').html(average(battery.voltage.map(Number)).toFixed(2));
+            $('#s-v-avg').html(average(solar.voltage.map(Number)).toFixed(2));
+            $('#s-c-avg').html(average(solar.current.map(Number)).toFixed(2));
+        });
 }

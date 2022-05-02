@@ -33,15 +33,15 @@
     </div>
     <div class="menu-btn"></div>
   </header>
-  
+
   <!-- Body -->
   <div class="interface-container">
     <div class="info">
       <div class="interface-btn">
         <!-- download button-->
         <a href="/data" download class="download-btn" id="download-btn">Download Data</a>
-				<a onclick="window.open('wind-request', '_blank', 'width=500,height=300')"
-				target="_blank" class="height-btn">Adjust RPM</a>
+        <a onclick="window.open('wind-request', '_blank', 'width=500,height=300')" target="_blank"
+          class="height-btn">Adjust RPM</a>
       </div>
       <div class="parameters">
         <p>Current Battery Voltage: <span id="bat-volt">0</span></p>
@@ -67,8 +67,65 @@
 </footer>
 
 <script>
-	  // toggle dropdown
-		$(document).ready(function () {
+  Chart.defaults.font.family = "Verdana";
+
+  const myChart = new Chart(
+    document.getElementById('wind-graph').getContext("2d"), {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+            label: 'Wind Voltage',
+            data: [],
+            borderColor: [
+              'rgba(68, 118, 4, 1)',
+            ],
+            tension: 0.15,
+            yAxisID: 'y'
+          },
+          {
+            label: 'wind Current',
+            data: [],
+            borderColor: [
+              'rgba(108, 197, 81, 1)',
+            ],
+            tension: 0.15,
+            yAxisID: 'y1'
+          },
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            display: true,
+            position: 'left',
+
+            title: {
+              display: true,
+              text: 'voltage'
+            }
+          },
+          y1: {
+            beginAtZero: true,
+            display: true,
+            position: 'right',
+
+            grid: {
+              drawOnChartArea: false
+            },
+
+            title: {
+              display: true,
+              text: 'current'
+            }
+          }
+        }
+      }
+    });
+
+  // toggle dropdown
+  $(document).ready(function () {
     //toggle sub menu
     $(".sub-btn").click(function () {
       $(this).next(".sub-menu").slideToggle();
@@ -94,4 +151,5 @@
     header.classList.toggle("sticky", window.scrollY > 0)
   });
 </script>
+
 </html>

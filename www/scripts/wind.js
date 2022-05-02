@@ -1,119 +1,60 @@
-/*taken from https://www.youtube.com/watch?v=Y1JhMa22CoM*/
+updateChart();
 
-drawChart();
-// setup 
-async function drawChart() {
-	const datapoints = await getData();
+let labels = [];
 
-	const data = {
-		labels: datapoints.labels,
-		datasets: [{
-			label: 'Wind Voltage',
-			data: datapoints.wind.voltage,
-			borderColor: [
-				'rgba(68, 118, 4, 1)',
-			],
-			tension: 0.15,
-			yAxisID: 'y'
-		},
-		{
-			label: 'Wind Current',
-			data: datapoints.wind.current,
-			borderColor: [
-				'rgba(108, 197, 81, 1)',
-			],
-			tension: 0.15,
-			yAxisID: 'y1'
-		},
-		]
-	};
+let wind = {
+    voltage: [],
+    current: []
+};
 
-	Chart.defaults.font.family = "Verdana";
+let battery = {
+    voltage: []
+};
 
-	// config 
-	const config = {
-		type: 'line',
-		data,
-		options: {
-			scales: {
-				y: {
-					beginAtZero: true,
-					display: true,
-					position: 'left',
-
-					title: {
-						display: true,
-						text: 'voltage'
-					}
-				},
-				y1: {
-					beginAtZero: true,
-					display: true,
-					position: 'right',
-
-					grid: {
-						drawOnChartArea: false
-					},
-
-					title: {
-						display: true,
-						text: 'current'
-					}
-				}
-			}
-		}
-	};
-
-	// render init block
-	const myChart = new Chart(
-		document.getElementById('wind-graph'),
-		config
-	);
+//push new values every 1.5 seconds
+function updateChart() {
+    setInterval(getData, 1500);
 }
 
 async function getData() {
-	//arrays to store data
-	const labels = [];
-	const wind = {
-		voltage: [],
-		current: []
-	};
-	const battery = {
-		voltage: []
-	};
-
-	//fetch csv
+    //fetch csv from url
     const url = '/data';
-    const response = await fetch(url, {
-        'content-type': 'text/csv;charset=UTF-8'
-    });
-    const tabledata = await response.text();
+    fetch(url, {
+            'content-type': 'text/csv;charset=UTF-8'
+        })
+        .then(data => data.text(), error => console.warn("Failed to fetch data"))
+        .then(tabledata => {
+            //split by row
+            const table = tabledata.split('\n').slice(1);
 
-	//parse csv
-	//split by row
-	const table = tabledata.split('\n').slice(1);
+            //get last row
+            const row = table[table.length - 1].split(',');
 
-	//split by column
-	table.forEach(row => {
-		const column = row.split(',');
-		labels.push(column[1]);
+            //display 30 data points on the graph at anytime
+            if (myChart.data.labels.length > 30) {
+                myChart.data.labels.shift();
+                myChart.data.datasets[0].data.shift();
+                myChart.data.datasets[1].data.shift();
+            }
+            //update chart
+            myChart.data.labels.push(row[1]);
+            myChart.data.datasets[0].data.push(row[5]);
+            myChart.data.datasets[1].data.push(row[6]);
 
-		wind.voltage.push(column[5]);
-		wind.current.push(column[6]);
+            //update array
+            labels.push(row[1]);
+            wind.voltage.push(row[5]);
+            wind.current.push(row[6]);
+            battery.voltage.push(row[7]);
 
-		battery.voltage.push(column[7]);
-	});
+            myChart.update();
 
-	return {
-		labels,
-		wind,
-		battery
-	};
-}
+            const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
-window.onload = async function () {
-	//update battery voltage
-	const data = await getData();
-	const batData = data.battery.voltage;
-	$('#bat-volt').html(batData[batData.length - 1]);
+            //update left panels
+            $('#bat-volt').html(battery.voltage[battery.voltage.length - 1]);
+            $('#bat-avg').html(average(battery.voltage.map(Number)).toFixed(2));
+            $('#s-v-avg').html(average(wind.voltage.map(Number)).toFixed(2));
+            $('#s-c-avg').html(average(wind.current.map(Number)).toFixed(2));
+        });
 }
