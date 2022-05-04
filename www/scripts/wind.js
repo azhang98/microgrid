@@ -45,16 +45,13 @@ async function getData() {
             labels.push(row[1]);
             wind.voltage.push(row[5]);
             wind.current.push(row[6]);
-            battery.voltage.push(row[7]);
 
             myChart.update();
 
             const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
             //update left panels
-            $('#bat-volt').html(battery.voltage[battery.voltage.length - 1]);
-            $('#bat-avg').html(average(battery.voltage.map(Number)).toFixed(2));
-            $('#s-v-avg').html(average(wind.voltage.map(Number)).toFixed(2));
-            $('#s-c-avg').html(average(wind.current.map(Number)).toFixed(2));
+            $('#bat-volt').html(average(wind.voltage.map(Number)).toFixed(2));
+            $('#bat-cur').html(average(wind.current.map(Number)).toFixed(2));
         });
 }

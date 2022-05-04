@@ -1,4 +1,4 @@
-# microgrid (wip readme)
+# microgrid
 This repository contains the code for our senior design project. The focus of this project is to "investigate the feasibility of an internet-of-things approach to the monitoring and controlling a power management system".   
 
 The project runs off three ESP32's. Two of the ESP32's host the server runs MicroPython using MicroWebSrv2 for its framework with one of them used to show server information. The other ESP32 runs on C and is used to control the wind turbine and battery. 
@@ -13,14 +13,16 @@ The project runs off three ESP32's. Two of the ESP32's host the server runs Micr
     - `RS232.py` : sends data to the ESP32 from the solar charge controller
     - `linear_actuator.py` : send commands to the Arduino to move the linear actuator vertically for the solar panel
     - `time_elapsed.py` : starts a timer for the session for data logging purposes
-- JS files: uses fetch API/RESTful design patterns to read and update the graph 
+- JS files: uses fetch API/RESTful design to read and update the graph 
 
 # usage
 1. Flash the firmware onto the device. Refer to [`/board_boot`](https://github.com/Cutherean/microgrid/tree/main/board_boot) for instructions
 2. Flash `boot.py` and `sdcard.py` to the board using [ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
 3. Turn on any hardware needed
-4. Open the ESP32 to your terminal/command line/whatever
+    1. Note: connect the RS232 cable before the solar charge controller is on or while they are both on
+4. Connect the ESP32 to a power source or to a computer (if connecting to a computer you will need to use something like `screen` with a baud rate of 115200)
 5. Click the reset button on the board
+    1. A known issue is that you will need to reinsert the SD card after resetting the board
 6. Go to the IP address shown
 
 # contributors
