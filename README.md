@@ -18,7 +18,8 @@ The wind charge controller charges a 12V DC battery. The wind charge controller 
 - JS files: uses fetch API/RESTful design to read and update the graph 
 - Hardware Design 
     - `WindChargeContollerESP32.ino` : takes current and voltage readings of battery. receives rpm value from arduino mega and passes all data to web based ESP32. send user input pwm to arduino mega. enable/disable functionality 
-    - Schematics : circuit design
+    - `MotorControllerTest_2.ino` : code for arduino mega on work bench. takes rpm reading and controls pwm values sent to generator 
+    - Schematics & Simulatons: circuit design
     - Wind Charge Conroller Improvements : suggested improvements for future iterations 
 # usage
 1. Flash the firmware onto the device. Refer to [`/board_boot`](https://github.com/Cutherean/microgrid/tree/main/board_boot) for instructions
